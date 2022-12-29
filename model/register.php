@@ -1,6 +1,6 @@
 <?php
 
-  // include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
+  include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
 
   header("Access-Control-Allow-Origin: *");
   include_once $_SERVER['DOCUMENT_ROOT'].'/main_backend/connect/dbconn.php';
@@ -89,7 +89,8 @@
       } else {
         
         $_SESSION['userid'] = $userid;
-        echo json_encode(array("userid" => $_SESSION['userid']));
+        $_SESSION['useridx'] = $login_data['user_idx'];
+        echo json_encode(array("userid" => $_SESSION['userid'], "useridx" => $_SESSION['useridx']));
       }
 
       // echo json_encode(array("userid" => $pwd_valid));
