@@ -151,7 +151,7 @@
 
         if(!$stmt->prepare($sql)){
           http_response_code(400);
-          echo json_encode(array("msg" => "글 수정에 실패했습니다.(1)"));
+          echo json_encode(array("msg" => "글 수정에 실패했습니다."));
         }
 
         $stmt -> bind_param("ss", $cmt_cont, $cmt_idx);
@@ -162,7 +162,7 @@
           echo json_encode(array("msg" => "상품평 수정되었습니다."));
         }else{
           http_response_code(400);
-          echo json_encode(array("msg" => "글 수정에 실패했습니다.(2)"));
+          echo json_encode(array("msg" => "글 수정에 실패했습니다."));
         }
 
       // echo json_encode(array("cmt_idx" => $cmt_idx, "cmt_cont" => $cmt_cont));
