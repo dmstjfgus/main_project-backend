@@ -14,6 +14,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
 
             if(in_array($_POST['cart_name'], $addedItem)){ // 첫번째 파라미터 베열에 두번째 파라미터 값이 있으면 true 없으면 flase
                 echo json_encode(array("msg" => "이미 추가된 상품입니다."));
+                // echo json_encode(array("msg" => $_SESSION['cart']));
             } else {
                 $count = count($_SESSION['cart']);
 
@@ -45,7 +46,15 @@ include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
     }
 
     // 2. 카트 요청
-    if($req_cart == "get_cart"){}
+    if($req_cart == "get_cart"){
+        if(isset($_SESSION['cart'])){
+            $cart_lists = $_SESSION['cart'];
+        } else {
+            $cart_lists = '카트에 추가된 상품이 없습니다.';
+        }
+
+        echo json_encode($cart_lists);
+    }
 
     /// 3. 카트 삭제
     if($req_cart == "del_cart"){}
