@@ -50,7 +50,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
         if(isset($_SESSION['cart'])){
             $cart_lists = $_SESSION['cart'];
         } else {
-            $cart_lists = '카트에 추가된 상품이 없습니다.';
+            $cart_lists = null;
         }
 
         echo json_encode($cart_lists);
