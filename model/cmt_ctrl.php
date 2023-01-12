@@ -127,7 +127,6 @@
       echo json_encode($json_result);
       // echo json_encode(array("p_idx" => $p_idx, "userid" => $userid));
 
-      
     }
     function patch_cmt($conn){
       // upadate 구문 참조 : http://www.tcpschool.com/mysql/mysql_basic_update
