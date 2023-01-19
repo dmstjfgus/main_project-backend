@@ -120,6 +120,13 @@
       $sql = "SELECT spl_cmt.*, spl_user.user_id FROM spl_cmt JOIN spl_user ON spl_cmt.cmt_u_idx = spl_user.user_idx WHERE cmt_pro_idx = $p_idx ORDER BY spl_cmt.cmt_reg DESC";
       $result = mysqli_query($conn, $sql);
 
+      // 특정 컬럼 평균값 구하기
+      //SELECT AVG([column name]) FROM [table name] WHERE [conditiion]
+      $sql_avg = "SELECT AVG(cmt_star) as avg FROM spl_cmt WHERE cmt_pro_idx = $p_idx";
+      $avg_result = mysqli_query($conn, $sql_avg);
+      $avg_arr = mysqli_fetch_array($avg_result)['avg'];
+
+
       if(!mysqli_num_rows($result)){
         echo json_encode(array("msg" => "조회된 게시글이 없습니다."));
         exit();
@@ -127,7 +134,7 @@
 
         $json_result = array(); // 빈 배열 초기화 
         while($row = mysqli_fetch_array($result)){
-            array_push($json_result, array("cmt_idx" => $row['cmt_idx'], "cmt_cont" => $row['cmt_cont'], 'cmt_reg' => $row['cmt_reg'], 'user_id' => $row['user_id'], "session_id" => $userid, "rating" => $row['cmt_star'])); // 첫번째 파라미터 : 대상 배열, 두번째 파라미터는 배열 입력값
+            array_push($json_result, array("cmt_idx" => $row['cmt_idx'], "cmt_cont" => $row['cmt_cont'], 'cmt_reg' => $row['cmt_reg'], 'user_id' => $row['user_id'], "session_id" => $userid, "rating" => $row['cmt_star'], "avg" => $avg_arr)); // 첫번째 파라미터 : 대상 배열, 두번째 파라미터는 배열 입력값
         }
         
       }
@@ -146,6 +153,7 @@
 
       $cmt_idx = $_GET['cmt_idx'];
       $cmt_cont = $_PATCH['update_cont'];
+      $cmt_star =  $_PATCH['cmt_star'];
       // php에서는 공식적으로 post와 get만 지원한다. 따라서 patch, delete, put 등은 별도릐 접근 처리를 해줘야 한다.
 
       if(!isset($_SESSION['useridx'])){
@@ -153,24 +161,26 @@
         exit();
       }
 
-      $sql = "UPDATE spl_cmt SET cmt_cont = ? WHERE cmt_idx= ?";
-      $stmt = $conn->stmt_init();
+      // echo json_encode(array("cmt_idx" => $cmt_idx, "cmt_cont" => $cmt_cont, "cmt_star" => $cmt_star));
+
+      $sql = "UPDATE spl_cmt SET cmt_cont = ?, cmt_star = ? WHERE cmt_idx= ?";
+      $stmt = $conn->stmt_init(); // 웹 서버 버전 7.3이상만 가능
 
         if(!$stmt->prepare($sql)){
           http_response_code(400);
           echo json_encode(array("msg" => "글 수정에 실패했습니다."));
         }
 
-        $stmt -> bind_param("ss", $cmt_cont, $cmt_idx);
+        $stmt -> bind_param("sss", $cmt_cont, $cmt_star, $cmt_idx);
         $stmt -> execute();
 
-        if($stmt->affected_rows > 0){
-          http_response_code(200);
+        // if($stmt->affected_rows > 0){
+        //   http_response_code(200);
           echo json_encode(array("msg" => "상품평 수정되었습니다."));
-        }else{
-          http_response_code(400);
-          echo json_encode(array("msg" => "글 수정에 실패했습니다."));
-        }
+        // }else{
+        //   http_response_code(400);
+        //   echo json_encode(array("msg" => "글 수정에 실패했습니다."));
+        // }
 
       // echo json_encode(array("cmt_idx" => $cmt_idx, "cmt_cont" => $cmt_cont));
     }
