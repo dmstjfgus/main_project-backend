@@ -4,11 +4,9 @@
         $user_id = $_SESSION['userid'];
         $user_idx = $_SESSION['useridx'];
         $user_lvl = $_SESSION['userlvl'];
-        // echo json_encode(array("userid" => $_SESSION['userid'], "user_idx" => $_SESSION['useridx']));
     }else{
         $user_id = "guest";
         $user_idx = -1;
-        // echo json_encode(array("userid" => "guest"));
     }
 
     if(isset($_SESSION['cart'])){

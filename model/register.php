@@ -27,15 +27,11 @@
 
     $pwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    // echo json_encode(array("name" => var_dump($conn)));
-
     // sql 입력 명령어 작성
     $sql = "INSERT INTO spl_user (user_name, user_id, user_email, user_pass, user_lvl) VALUES (?,?,?,?,?)";
 
     // // stmt init 참조 :https://www.w3schools.com/php/func_mysqli_stmt_init.asp
     $stmt = $conn->stmt_init();
-
-    // echo json_encode(array("name" => var_dump($stmt)));
 
     if(!$stmt->prepare($sql)){
       http_response_code(400);
@@ -53,9 +49,6 @@
       echo json_encode(array("msg" => "Sign Up Fail!!"));
     }
 
-    // echo json_encode(array("name" => var_dump($conn)));
-
-    // echo json_encode(array("name" => $name, "id" => $id, "email" => $email, "pwd" => $pwd)); // 문자열을 json 배열 변수로 반환한다. 파라미터에 반드시 배열이 있어야한다.
   }
   function signin($conn){ // 로그인 처리 함수
 
@@ -95,11 +88,8 @@
         echo json_encode(array("userid" => $_SESSION['userid'], "useridx" => $_SESSION['useridx'], "userlvl" => $_SESSION['userlvl']));
       }
 
-      // echo json_encode(array("userid" => $pwd_valid));
     }
     
-    // echo $userid, $pwd;
-    // echo json_encode(array("userid" => mysqli_num_rows($result))); 
   }
   function signout(){ // 로그아웃 처리 함수
     if(isset($_SESSION['userid'])){

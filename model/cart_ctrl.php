@@ -60,8 +60,6 @@ include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
     if($req_cart == "del_cart"){
         $cart_idx = $_GET['cart_idx'];
 
-        // echo json_encode(array("msg" => $cart_idx));
-
         // foreach as 문 : https://extbrain.tistory.com/24
         foreach($_SESSION['cart'] as $key => $value){
             if($value['cart_idx'] == $cart_idx){

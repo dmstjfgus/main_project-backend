@@ -3,10 +3,6 @@
     include $_SERVER['DOCUMENT_ROOT'].'/main_backend/etc/error.php';
     include_once $_SERVER['DOCUMENT_ROOT'].'/main_backend/connect/dbconn.php';
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['req_sign']) && ($_GET['req_sign']) == 'post_cmt'){
-        post_cmt($conn);
-      }
-
       // patch 함수
       function parse_raw_http_request(array &$a_data){
         // read incoming data
@@ -69,8 +65,6 @@
           $cmt_star = 1;
         }
 
-        // echo json_encode(array("u_idx" => $u_idx, "pro_idx" => $pro_idx, "content" => $content,"cmt_reg" => $cmt_reg, "cmt_star" => $cmt_star));
-
         if(!isset($_SESSION['useridx'])){
             echo json_encode(array("msg" => "상품평을 작성하려면 로그인이 필요합니다."));
             exit();
@@ -81,8 +75,6 @@
 
         // // stmt init 참조 :https://www.w3schools.com/php/func_mysqli_stmt_init.asp
         $stmt = $conn->stmt_init();
-
-        // echo json_encode(array("name" => var_dump($stmt)));
 
         if(!$stmt->prepare($sql)){
           http_response_code(400);
@@ -100,8 +92,6 @@
           echo json_encode(array("msg" => "상품평이 입력이 되지 않았습니다."));
         }
 
-        // echo json_encode(array("u_idx" => $u_idx, "pro_idx" => $pro_idx, "content" => $content,"cmt_reg" => $cmt_reg));
-    }
     // 상품조회
     function get_cmt($conn){
 
@@ -140,8 +130,6 @@
       }
       
       echo json_encode($json_result);
-      // echo json_encode(array("p_idx" => $p_idx, "userid" => $userid));
-
     }
     function patch_cmt($conn){
       // upadate 구문 참조 : http://www.tcpschool.com/mysql/mysql_basic_update
@@ -161,8 +149,6 @@
         exit();
       }
 
-      // echo json_encode(array("cmt_idx" => $cmt_idx, "cmt_cont" => $cmt_cont, "cmt_star" => $cmt_star));
-
       $sql = "UPDATE spl_cmt SET cmt_cont = ?, cmt_star = ? WHERE cmt_idx= ?";
       $stmt = $conn->stmt_init(); // 웹 서버 버전 7.3이상만 가능
 
@@ -174,14 +160,7 @@
         $stmt -> bind_param("sss", $cmt_cont, $cmt_star, $cmt_idx);
         $stmt -> execute();
 
-        // if($stmt->affected_rows > 0){
-        //   http_response_code(200);
           echo json_encode(array("msg" => "상품평 수정되었습니다."));
-        // }else{
-        //   http_response_code(400);
-        //   echo json_encode(array("msg" => "글 수정에 실패했습니다."));
-        // }
-
-      // echo json_encode(array("cmt_idx" => $cmt_idx, "cmt_cont" => $cmt_cont));
     }
+  }
 ?>

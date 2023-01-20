@@ -46,14 +46,12 @@ if($limit < $image_size){
 }
 
 $image_dir = $_SERVER['DOCUMENT_ROOT'].'/main_project/images/products/'; // 사진이 저장될 경로 저장
-// echo json_encode(array("msg" => $image_dir));
 
 // 이미지 업로드 : * 파일 업로드 시 파일 자체는 지정한 디렉토리 안으로 가고, DBDPSMS ㅊ파일이름 문자열이 지정된다.
 if($image_name && !$image_error){
     // move_uploaded_file(파일 임시 이름, 이동할위치)
     $upload_file = $image_dir.$image_name;
     if(!move_uploaded_file($image_tmp_name, $upload_file)){
-        // echo json_encode(array("msg" => "사진이 업로드 되지 않았습니다"));
         exit();
     }
 } else {
@@ -68,8 +66,6 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/main_backend/connect/dbconn.php';
 
  // // stmt init 참조 :https://www.w3schools.com/php/func_mysqli_stmt_init.asp
  $stmt = $conn->stmt_init();
-
- // echo json_encode(array("name" => var_dump($stmt)));
 
  if(!$stmt->prepare($sql)){
    http_response_code(400);
@@ -86,7 +82,5 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/main_backend/connect/dbconn.php';
    http_response_code(400);
    echo json_encode(array("msg" => "입력에 실패했습니다."));
  }
- 
-//  echo json_encode(array("name" => $pro_name, "price" => $pro_price, "desc" => $pro_desc, "reg" => $pro_reg, "img_name" => $image_name, "img_tmp_name" => $image_tmp_name, "img_type" => $image_type, "img_size" => $image_size, "img_error" => $image_error, "exp" => $exp));
  
 ?>
